@@ -39,5 +39,6 @@ chmod +x $PREFIX/bin/interaction
   - "n" 表示退出；
   - "y" 表示启动并下载依赖。
 - 下载完成后，可以输入 Java 文件名来快速运行 Java 程序。
+- 如果您已经将依赖下好,该提示不会出现
 - 输入 "cpp"、"php"、"js" 或 "python" 可进入相应的运行模式。操作与 Java 模式一致，可以使用 "quit" 命令返回 Java 模式。
 - 可以通过 "quit" 退出程序。

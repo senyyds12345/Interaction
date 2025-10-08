@@ -37,5 +37,6 @@ chmod +x $PREFIX/bin/interaction
 - "y" means to start and download dependencies.
  
 - Once the download is complete, you can enter the Java filename to run the Java program quickly.
+- If you have already downloaded the dependencies, this prompt will not appear.
 - Enter "cpp", "php", "js", or "python" to enter the corresponding running mode. The operation is consistent with the Java mode, and you can return to the Java mode using the "quit" command.
 - You can exit the program via "quit".
