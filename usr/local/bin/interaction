@@ -31,7 +31,9 @@ while true; do
         break
     fi
     if [ -f "$file" ]; then
-        java "$file"
+        javac "$file"
+        name=${file%.java}
+        java "$name"
     fi
     if [ "$file" = "cpp" ]; then
         while true; do
