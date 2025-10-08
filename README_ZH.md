@@ -1,4 +1,3 @@
-[zh_CN](./README_ZH.md)
 # Interaction
 
 这是一个交互式运行器，可以快速运行 Java、C++、PHP、 JavaScript 和 Python 程序。

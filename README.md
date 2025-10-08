@@ -1,3 +1,4 @@
+[zh_CN](./README_ZH.md)
 # Interaction
 - This program is an interactive runner that allows you to quickly run Java, C++, PHP, JavaScript, and Python.
 # install
