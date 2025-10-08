@@ -1,0 +1,83 @@
+#!/bin/bash
+packages=("java" "python" "php" "clang" "nodejs")
+for pkg in ${packages[@]}; do
+    if command -v "$pkg" &> /dev/null; then
+        echo "$pkg已安装"
+    else
+        read -p "是否选择安装/更新依赖?(n,y):" abc
+        if [ "$abc" = "n" ]; then
+            echo "退出程序 您可以下次再来安装"
+            exit 0
+        fi
+        if [ $abc = "y" ]; then
+            echo "开始下载/安装……"
+        fi
+        if ! pkg update; then
+            echo "安装失败!请检查网络"
+            exit 1
+        fi
+        if ! pkg install openjdk-21 clang php nodejs python; then
+            echo "安装失败!请检查网络"
+            exit 1
+        else
+            echo "安装成功!欢迎使用!"
+        fi
+    fi
+done
+while true; do
+    read -p "<java模式>" file
+    if [ "$file" = "quit" ]; then
+        echo "再见!"
+        break
+    fi
+    if [ -f "$file" ]; then
+        java "$file"
+    fi
+    if [ "$file" = "cpp" ]; then
+        while true; do
+            read -p "<c++模式>" cppfile
+            if [ -f $cppfile ] && [ $cppfile != "quit" ]; then
+                g++ -o main $cppfile
+                ./main
+                rm -rf main
+            elif [ $cppfile = "quit" ]; then
+                echo "返回java模式"
+                break    
+            fi    
+        done
+    fi
+    if [ "$file" = "python" ]; then
+        while true; do
+            read -p "<python模式>" pythonfile
+            if [ -f $pythonfile ]; then
+                python $pythonfile
+            elif [ $pythonfile = "quit" ]; then
+                echo "返回java模式"
+                break
+            fi
+        done
+    fi
+    if [ $file = "php" ]; then
+        while true; do
+            read -p "<php模式>" phpfile
+            if [ -f $phpfile ]; then
+                php $phpfile
+                echo
+            elif [ $phpfile = "quit" ]; then
+                echo "返回java模式"
+                break    
+            fi
+        done
+    fi
+    if [ $file = "js" ]; then
+        while true; do
+            read -p "<javascript模式>" jsfile
+            if [ -f $jsfile ]; then
+                node $jsfile
+            elif [ $jsfile = "quit" ]; then
+                echo "返回java模式"
+                break    
+            fi
+        done
+    fi
+done
