@@ -2,28 +2,29 @@
 missing=0
 packages=("java" "javac" "python" "php" "gcc" "node")
 
-for pkg in ${packages[@]}; do
-    if command -v "$pkg" &> /dev/null; then
-        echo "[$(date +'%Y-%m-%d %H:%M:%S')] $message" > /dev/null
-    else
-        echo "[$(date +'%Y-%m-%d %H:%M:%S')] $message" > /dev/null
+for apt in ${packages[@]}; do
+    if command -v "$apt" &> /dev/null; then
+        echo "$apt已安装" &>/dev/null
+     else
+        echo "$apt未安装"
         missing=1
     fi
 done
 
 if [ "$missing" -eq 1 ]; then
-    read -p "<是否安装依赖?(n,y)>" abc
-    if [ "$abc" = "y" ]; then
-        if ! pkg install gcc-15 python openjdk-21 nodejs php; then
+    read -p "<有未下载的依赖,是否安装?(n,y)>" abc
+    if [ "$abc" = "y" ] || [ "$abc" = "Y" ]; then
+        if ! apt install gcc-15 python openjdk-21 nodejs php; then
             echo "安装失败!"
             exit 1
         fi
     fi
-    if [ "$abc" = "n" ]; then
-        echo "程序关闭"
-        break
+    if [ "$abc" = "n" ] || [ "$abc" = "N" ]; then
+        echo "你没有选择安装依赖, 程序无法运行." abc
+        exit -1
     fi
 fi
+
 while true; do
     read -p "<java模式>" file
     if [ "$file" = "quit" ]; then
