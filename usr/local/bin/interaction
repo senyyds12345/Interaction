@@ -1,29 +1,29 @@
 #!/bin/bash
-packages=("java" "python" "php" "clang" "nodejs")
+missing=0
+packages=("java" "javac" "python" "php" "gcc" "node")
+
 for pkg in ${packages[@]}; do
     if command -v "$pkg" &> /dev/null; then
-        echo "$pkg已安装"
+        echo "[$(date +'%Y-%m-%d %H:%M:%S')] $message" > /dev/null
     else
-        read -p "是否选择安装/更新依赖?(n,y):" abc
-        if [ "$abc" = "n" ]; then
-            echo "退出程序 您可以下次再来安装"
-            exit 0
-        fi
-        if [ $abc = "y" ]; then
-            echo "开始下载/安装……"
-        fi
-        if ! pkg update; then
-            echo "安装失败!请检查网络"
-            exit 1
-        fi
-        if ! pkg install openjdk-21 clang php nodejs python; then
-            echo "安装失败!请检查网络"
-            exit 1
-        else
-            echo "安装成功!欢迎使用!"
-        fi
+        echo "[$(date +'%Y-%m-%d %H:%M:%S')] $message" > /dev/null
+        missing=1
     fi
 done
+
+if [ "$missing" -eq 1 ]; then
+    read -p "<是否安装依赖?(n,y)>" abc
+    if [ "$abc" = "y" ]; then
+        if ! pkg install gcc-15 python openjdk-21 nodejs php; then
+            echo "安装失败!"
+            exit 1
+        fi
+    fi
+    if [ "$abc" = "n" ]; then
+        echo "程序关闭"
+        break
+    fi
+fi
 while true; do
     read -p "<java模式>" file
     if [ "$file" = "quit" ]; then
@@ -34,51 +34,52 @@ while true; do
         javac "$file"
         name=${file%.java}
         java "$name"
+        rm -rf "$name.class"
     fi
     if [ "$file" = "cpp" ]; then
         while true; do
             read -p "<c++模式>" cppfile
-            if [ -f $cppfile ] && [ $cppfile != "quit" ]; then
-                g++ -o main $cppfile
-                ./main
-                rm -rf main
-            elif [ $cppfile = "quit" ]; then
+            if [ "$cppfile" = "quit" ]; then
                 echo "返回java模式"
                 break    
+            elif [ -f "$cppfile" ]; then
+                g++ -o main "$cppfile"
+                ./main
+                rm -rf main
             fi    
         done
     fi
     if [ "$file" = "python" ]; then
         while true; do
             read -p "<python模式>" pythonfile
-            if [ -f $pythonfile ]; then
-                python $pythonfile
-            elif [ $pythonfile = "quit" ]; then
+            if [ "$pythonfile" = "quit" ]; then
                 echo "返回java模式"
                 break
+            elif [ -f "$pythonfile" ]; then
+                python "$pythonfile"  
             fi
         done
     fi
-    if [ $file = "php" ]; then
+    if [ "$file" = "php" ]; then
         while true; do
             read -p "<php模式>" phpfile
-            if [ -f $phpfile ]; then
-                php $phpfile
-                echo
-            elif [ $phpfile = "quit" ]; then
+            if [ "$phpfile" = "quit" ]; then
                 echo "返回java模式"
                 break    
+            elif [ -f "$phpfile" ]; then
+                php "$phpfile"
+                echo
             fi
         done
     fi
-    if [ $file = "js" ]; then
+    if [ "$file" = "js" ]; then
         while true; do
             read -p "<javascript模式>" jsfile
-            if [ -f $jsfile ]; then
-                node $jsfile
-            elif [ $jsfile = "quit" ]; then
+            if [ "$jsfile" = "quit" ]; then
                 echo "返回java模式"
                 break    
+            elif [ -f "$jsfile" ]; then
+                node "$jsfile"
             fi
         done
     fi
