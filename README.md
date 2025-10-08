@@ -5,11 +5,17 @@
 ```dpkg-deb build Interaction```
 - If you are using Termux, we cannot install this DEB package with  dpkg -i —this is because Android does not allow the installation of system packages. Therefore, we use the "moving files" method for installation.
 1.unzip
+  
 ```dpkg -x Interaction.deb extracted/```
+
 2.moving
+
 ```cp extracted/usr/local/bin/interaction $PREFIX/bin/```
+
 3.Grant executable permissions
+
 ```chmod +x $PREFIX/bin/interaction```
+
 - After completing the above operations, you can use  interaction  to run the program.
 - Currently, there are ready-to-use DEB packages available in the Release description for you to download directly.
 ## use
